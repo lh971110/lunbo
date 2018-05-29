@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.pic {
+				width: 260px;
+				height: 176px;
+				margin: 100px auto;
+				border: 2px solid cornflowerblue;
+				overflow: hidden;
+				position: relative;
+			}
+			
+			.pic ul {
+				position: absolute;
+				list-style: none;
+				width: 1096px;
+				left: 0px;
+				top: 0px;
+			}
+			
+			.pic ul li {
+				float: left;
+				margin-right: 10px;
+			}
+			
+			.pic #nav {
+				position: absolute;
+				z-index: 999;
+				left: 82px;
+				top: 156px;
+				width: 180px;
+				height: 20px;
+			}
+			
+			.pic #nav a {
+				display: block;
+				float: left;
+				width: 15px;
+				height: 15px;
+				border-radius: 50%;
+				margin-right: 10px;
+				background-color: red;
+				opacity: 0.7;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="pic">
+			<ul>
+				<li><img src="image/page2_pic1.jpg" /></li>
+				<li><img src="image/page2_pic2.jpg" /></li>
+				<li><img src="image/page2_pic3.jpg" /></li>
+				<li><img src="image/page2_pic4.jpg" /></li>
+			</ul>
+			<div id="nav">
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+			</div>
+		</div>
+		<script type="text/javascript">
+			window.onload = function() {
+
+				var oA = document.querySelector(".pic");
+				var oN = document.querySelector("#nav");
+				var oBanner = new Banner(oA, oN);
+				oBanner._init();
+				oBanner.autoPlay();
+			}
+
+			function Banner(opic, onav, timer) {
+				this.oul = opic.getElementsByTagName("ul")[0];
+				this.oLi = opic.getElementsByTagName("li");
+				this.oA = onav.getElementsByTagName("a");
+				this.index = 0;
+				this.timer = timer;
+
+			}
+			Banner.prototype = {
+				constructor: Banner,
+				_init: function() {
+					this.oA[this.index].style.backgroundColor = "black";
+					this.oA[this.index].style.opacity = "0.7";
+					for(var i = 0; i < this.oA.length; i++) {
+						this.oA[i].index = i;
+						var self = this;
+						this.oA[i].onclick = function() {
+							index = this.index;
+							self.change(this);
+							self.oul.style.left = -270 * (this.index) + "px";
+							self.oA[this.index].style.backgroundColor = "black";
+							self.oA[this.index].style.opacity = "0.7";
+						}
+						this.oA[i].onmouseover = function() {
+							clearInterval(self.timer);
+						}
+						this.oA[i].onmouseleave = function() {
+							self.autoPlay();
+						}
+					}
+				},
+				change: function() {
+					for(var i = 0; i < this.oA.length; i++) {
+						this.oA[i].style.backgroundColor = '';
+						this.oA[i].style.opacity = "0.7";
+					}
+				},
+				autoPlay: function() {
+					var that = this;
+					this.timer = setInterval(function() {
+						that.index++;
+						if(that.index > 3) {
+							that.index = 0;
+						}
+						that.change();
+						that.oul.style.left = -270 * (that.index) + "px";
+						that.oA[that.index].style.backgroundColor = "black";
+						that.oA[that.index].style.opacity = "0.7";
+					}, 1000)
+
+				}
+			}
+		</script>
+	</body>
+
+</html>
