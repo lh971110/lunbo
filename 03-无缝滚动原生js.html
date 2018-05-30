@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.pic {
+				width: 260px;
+				height: 176px;
+				margin: 100px auto;
+				border: 2px solid cornflowerblue;
+				overflow: hidden;
+				position: relative;
+			}
+			
+			.pic ul {
+				position: absolute;
+				list-style: none;
+				left: 0px;
+				top: 0px;
+			}
+			
+			.pic ul li {
+				float: left;
+				margin-right: 10px;
+			}
+			
+			.pic #nav {
+				position: absolute;
+				z-index: 999;
+				left: 82px;
+				top: 156px;
+				width: 180px;
+				height: 20px;
+			}
+			
+			.pic #nav a {
+				display: block;
+				float: left;
+				width: 15px;
+				height: 15px;
+				border-radius: 50%;
+				margin-right: 10px;
+				background-color: red;
+				opacity: 0.7;
+				/*filter: alpha(opacity=50);*/
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload = function(){
+				var pic = document.querySelector('.pic');
+				var ul = document.querySelector('ul');
+				var liArr = document.querySelectorAll('li');
+				var nav = document.querySelector("#nav");
+				var allA = document.querySelectorAll("#nav a");
+				ul.style.width = 274 * liArr.length + "px";
+				var index = 0;
+				var timer;
+				var speed = -12;
+				function getStyle(obj,name){
+					if(window.getComputedStyle){
+						return window.getComputedStyle(obj,null)[name];
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="pic">
+			<ul>
+				<li><img src="image/page2_pic1.jpg" /></li>
+				<li><img src="image/page2_pic2.jpg" /></li>
+				<li><img src="image/page2_pic3.jpg" /></li>
+				<li><img src="image/page2_pic4.jpg" /></li>
+				<li><img src="image/page2_pic1.jpg" /></li>
+				
+			</ul>
+			<div id="nav">
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;"></a>
+			</div>
+		</div>
+		
+	</body>
+</html>
