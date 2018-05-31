@@ -51,6 +51,10 @@
 				opacity: 0.7;
 				filter: alpha(opacity=50);
 			}
+			
+			.current {
+				background-color: black;
+			}
 		</style>
 		<script type="text/javascript">
 			window.onload = function() {
@@ -62,80 +66,29 @@
 				ul.style.width = 274 * liArr.length + "px";
 				var index = 0;
 				var timer;
-				var speed = -12;
-				allA[index].style.backgroundColor = "black";
+				allA[index].style.backgroundColor = 'black';
+				timer = setInterval(function() {
+					index++;
+					ul.style.transition = "all 0.3s";
+					ul.style.transform = 'translateX(' + index * -270 + 'px)';
 
-				function getStyle(obj, name) {
-					if(window.getComputedStyle) {
-						return window.getComputedStyle(obj, null)[name];
-					} else {
-						return obj.currentStyle.name;
-					}
-				}
-
-				function move(obj, target, name, speed, callback) {
-					var current = parseInt(getStyle(obj, name));
-					if(current > target) {
-						speed = -speed;
-					}
-					clearInterval(obj.timer);
-					obj.timer = setInterval(function() {
-						var oldValue = parseFloat(getStyle(obj, name));
-						var newValue = oldValue + speed;
-						if(speed < 0 && newValue < target || speed > 0 && newValue > target) {
-							newValue = target;
-						}
-						obj.style[name] = newValue + "px";
-						if(newValue == target) {
-							clearInterval(obj.timer);
-							callback && callback();
-						}
-					}, 20)
-				}
-				for (var i = 0; i < allA.length; i++) {
-					allA[i].index = i;
-					allA[i].onclick = function(){
-					    index = this.index;
-						move(ul,- 270 * index, 'left' , 20 ,function(){
-							setA();
-						});
-					}
-				
-				    allA[i].onmouseover = function(){
-					clearInterval(timer);
-				        }
-				    allA[i].onmouseleave = function(){
-				    	autoChange();
-				    }
-				}
-				function autoChange() {
-					timer = setInterval(function(){
-
-						index %= liArr.length;
-						index++;
-						
-						move(ul,- 270 * index, 'left' , 20 ,function(){
-							setA();
-						})
-					},2000)
-				}
-				autoChange();
-				function setA() {
-					
+				}, 1000)
+				ul.addEventListener("webkitTransitionEnd", function() {
 					if(index >= liArr.length - 1) {
 						index = 0;
-					ul.style.left = 0;
+						ul.style.transition = '';
+						ul.style.transform = 'translateX(' + index * -270 + 'px)';
 					}
-					for (var i = 0; i < allA.length; i++) {
+					for(var i = 0; i < allA.length; i++) {
+						
 						allA[i].style.backgroundColor = '';
 					}
-						allA[index].style.backgroundColor = 'black';
-					
-				}
-				setA();
-				
+					allA[index].style.backgroundColor = 'black';
+
+				})
 			}
 		</script>
+
 	</head>
 
 	<body>
@@ -149,7 +102,7 @@
 
 			</ul>
 			<div id="nav">
-				<a href="javascript:;"></a>
+				<a href="javascript:;" class="current"></a>
 				<a href="javascript:;"></a>
 				<a href="javascript:;"></a>
 				<a href="javascript:;"></a>
