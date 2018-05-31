@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -48,11 +49,11 @@
 				margin-right: 10px;
 				background-color: red;
 				opacity: 0.7;
-				/*filter: alpha(opacity=50);*/
+				filter: alpha(opacity=50);
 			}
 		</style>
 		<script type="text/javascript">
-			window.onload = function(){
+			window.onload = function() {
 				var pic = document.querySelector('.pic');
 				var ul = document.querySelector('ul');
 				var liArr = document.querySelectorAll('li');
@@ -62,14 +63,82 @@
 				var index = 0;
 				var timer;
 				var speed = -12;
-				function getStyle(obj,name){
-					if(window.getComputedStyle){
-						return window.getComputedStyle(obj,null)[name];
+				allA[index].style.backgroundColor = "black";
+
+				function getStyle(obj, name) {
+					if(window.getComputedStyle) {
+						return window.getComputedStyle(obj, null)[name];
+					} else {
+						return obj.currentStyle.name;
 					}
 				}
+
+				function move(obj, target, name, speed, callback) {
+					var current = parseInt(getStyle(obj, name));
+					if(current > target) {
+						speed = -speed;
+					}
+					clearInterval(obj.timer);
+					obj.timer = setInterval(function() {
+						var oldValue = parseFloat(getStyle(obj, name));
+						var newValue = oldValue + speed;
+						if(speed < 0 && newValue < target || speed > 0 && newValue > target) {
+							newValue = target;
+						}
+						obj.style[name] = newValue + "px";
+						if(newValue == target) {
+							clearInterval(obj.timer);
+							callback && callback();
+						}
+					}, 20)
+				}
+				for (var i = 0; i < allA.length; i++) {
+					allA[i].index = i;
+					allA[i].onclick = function(){
+					    index = this.index;
+						move(ul,- 270 * index, 'left' , 20 ,function(){
+							setA();
+						});
+					}
+				
+				    allA[i].onmouseover = function(){
+					clearInterval(timer);
+				        }
+				    allA[i].onmouseleave = function(){
+				    	autoChange();
+				    }
+				}
+				function autoChange() {
+					timer = setInterval(function(){
+
+						index %= liArr.length;
+						index++;
+						
+						move(ul,- 270 * index, 'left' , 20 ,function(){
+							setA();
+						})
+					},2000)
+				}
+				autoChange();
+				function setA() {
+					
+					if(index >= liArr.length - 1) {
+						index = 0;
+					ul.style.left = 0;
+					}
+					console.log(index)
+					for (var i = 0; i < allA.length; i++) {
+						allA[i].style.backgroundColor = '';
+					}
+						allA[index].style.backgroundColor = 'black';
+					
+				}
+				setA();
+				
 			}
 		</script>
 	</head>
+
 	<body>
 		<div class="pic">
 			<ul>
@@ -78,7 +147,7 @@
 				<li><img src="image/page2_pic3.jpg" /></li>
 				<li><img src="image/page2_pic4.jpg" /></li>
 				<li><img src="image/page2_pic1.jpg" /></li>
-				
+
 			</ul>
 			<div id="nav">
 				<a href="javascript:;"></a>
@@ -87,6 +156,7 @@
 				<a href="javascript:;"></a>
 			</div>
 		</div>
-		
+
 	</body>
+
 </html>
